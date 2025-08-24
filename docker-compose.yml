@@ -9,6 +9,8 @@ services:
     volumes:
       - ollama_data:/root/.ollama
     restart: unless-stopped
+    command: >
+      sh -c "ollama pull llama3 && ollama serve"
 
   qdrant:
     image: qdrant/qdrant:latest
@@ -35,7 +37,7 @@ services:
     restart: unless-stopped
 
   frontend:
-    build: ./frontend
+    build: ./document-app
     container_name: kb-frontend
     ports:
       - "3000:3000"

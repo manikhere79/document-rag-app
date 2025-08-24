@@ -1,14 +1,15 @@
-import React, { useState } from "react";
-import { createRoot } from "react-dom/client";
+
+import { useState } from "react";
+import type { FormEvent, ChangeEvent } from "react";
 
 function App() {
-  const [file, setFile] = useState(null);
+  const [file, setFile] = useState<File | null>(null);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
   const [context, setContext] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const uploadFile = async (e) => {
+  const uploadFile = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!file) return;
     const formData = new FormData();
@@ -22,7 +23,7 @@ function App() {
     alert("File uploaded!");
   };
 
-  const askQuestion = async (e) => {
+  const askQuestion = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     const formData = new FormData();
@@ -41,14 +42,18 @@ function App() {
     <div style={{ maxWidth: 600, margin: "2rem auto", fontFamily: "sans-serif" }}>
       <h2>Simple Knowledgebase</h2>
       <form onSubmit={uploadFile} style={{ marginBottom: 20 }}>
-        <input type="file" accept=".txt" onChange={e => setFile(e.target.files[0])} />
+        <input
+          type="file"
+          accept=".txt"
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setFile(e.target.files ? e.target.files[0] : null)}
+        />
         <button type="submit" disabled={loading}>Upload</button>
       </form>
       <form onSubmit={askQuestion}>
         <input
           type="text"
           value={question}
-          onChange={e => setQuestion(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setQuestion(e.target.value)}
           placeholder="Ask a question..."
           style={{ width: "70%" }}
         />
@@ -69,5 +74,4 @@ function App() {
   );
 }
 
-const root = createRoot(document.getElementById("root"));
-root.render(<App />);
+export default App;

@@ -4,3 +4,4 @@ httpx
 qdrant-client
 sentence-transformers
 python-dotenv
+python-multipart
